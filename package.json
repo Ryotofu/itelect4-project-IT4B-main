@@ -1,7 +1,7 @@
 {
   "name": "itelect4-project-it4b",
   "version": "1.0.0",
-  "description": "",
+  "description": ":D",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/goraphael703-lang/itelect4-project-IT4B#readme",
   "devDependencies": {
-    "@types/node": "^26.1.0",
+    "@types/node": "^26.1.1",
     "ts-node": "^10.9.2",
     "typescript": "^6.0.3"
   }

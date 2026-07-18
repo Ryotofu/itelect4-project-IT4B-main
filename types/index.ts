@@ -73,3 +73,37 @@ const topStudent: StudentWithCourse = {
   },
   gpa: 1.25,
 };
+
+// ==========================================
+// ===== SESSION 2 ADDITIONS (GT1 PART 2) =====
+// ==========================================
+
+// ===== GENERIC INTERFACE =====
+// ApiResponse<T> wraps any data shape safely
+export interface ApiResponse<T> {
+  success: boolean;
+  data: T;
+  message?: string;
+}
+
+// ===== UTILITY TYPES =====
+// 1. Partial<T> -- makes every field optional (perfect for updates)
+export type UserUpdate = Partial<User>;
+
+// 2. Omit<T, K> -- strips away specific keys (perfect for new submissions without an ID yet)[cite: 1]
+export type NewSubmissionPayload = Omit<Submission, "id">;
+
+// ===== ENUMS =====
+// Regular enum representing a multi-step status lifecycle[cite: 1]
+export enum SubmissionStatus {
+  Pending,
+  Graded,
+  Late,
+}
+
+// Const enum for high-performance compile-time role constants[cite: 1]
+export const enum UserRole {
+  Student = "student",
+  Admin = "admin",
+  Instructor = "instructor",
+}

@@ -84,3 +84,53 @@ function formatDate(value: string | Date): string {
 console.log(processInput("hello")); // HELLO
 console.log(processInput(3.14159)); // 3.14
 console.log(formatDate(new Date())); // e.g. 7/4/2026
+
+// ==========================================
+// ===== SESSION 2 TEST CODE (GT1 PART 2) =====
+// ==========================================
+
+import { 
+  ApiResponse, 
+  UserUpdate, 
+  NewSubmissionPayload, 
+  SubmissionStatus, 
+  UserRole 
+} from "../types/index";
+
+// ===== GENERIC FUNCTION =====
+// A function that extracts the first item from any array type safely[cite: 1]
+function getFirst<T>(items: T[]): T | undefined {
+  return items[0];
+}
+
+// Testing the generic function[cite: 1]
+const usersList: User[] = [student];
+const firstUser = getFirst<User>(usersList);
+console.log(`First User Name: ${firstUser?.name}`); // Juan dela Cruz
+
+// Testing the Generic Interface[cite: 1]
+const userResponse: ApiResponse<User> = {
+  success: true,
+  data: student,
+};
+console.log(`API Response Status: ${userResponse.success}`);
+
+// Testing Utility Types[cite: 1]
+const profileUpdate: UserUpdate = { name: "Juan D. Cruz" }; // Only updating name[cite: 1]
+const draftSubmission: NewSubmissionPayload = {
+  studentId: 1,
+  courseCode: "ITELECT4",
+  repoUrl: "https://github.com/user/repo",
+  submittedAt: new Date(),
+};
+
+// ===== Testing Enums =====
+let currentStatus: SubmissionStatus = SubmissionStatus.Pending;
+console.log(`Submission Status Index: ${currentStatus}`); // 0
+
+// Reassign it so TypeScript knows the value can change!
+currentStatus = SubmissionStatus.Graded; 
+console.log(`Is it graded? ${currentStatus === SubmissionStatus.Graded}`); // Now this will be true!
+
+const myRole: UserRole = UserRole.Student;
+console.log(`My Role: ${myRole}`); // "student"
