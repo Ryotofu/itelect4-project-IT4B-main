@@ -15,6 +15,7 @@ export interface Course {
   units: number;
   semester: string;
 }
+
 export interface Submission {
   id: number;
   studentId: number;
@@ -25,40 +26,37 @@ export interface Submission {
 }
 
 // ===== TYPE ALIASES =====
-// A type alias gives a name to any type -- primitives, unions, functions, objects
-// Alias for a union type (string OR number)
 export type ID = number | string;
-// Alias for an object shape
 export type Coordinate = {
   x: number;
   y: number;
 };
-// Alias for a function signature
 export type Formatter = (value: number) => string;
-// Using them
+
+// Using them + added console.log to fix unused variable warning
 const studentId: ID = "S2026-001";
 const position: Coordinate = { x: 10, y: 20 };
 const formatScore: Formatter = (value) => `${value}%`;
-console.log(studentId); // S2026-001
-console.log(formatScore(95.5)); // 95.5%
+console.log(studentId); 
+console.log(formatScore(95.5));
+console.log(position); // Fixed: variable is now read
 
-// ===== UNION TYPES -- One OR the other =====
+// ===== UNION TYPES =====
 export type StringOrNumber = string | number;
-export type Status = "pending" | "active" | "inactive"; // literal union
+export type Status = "pending" | "active" | "inactive"; 
 
-// Function that accepts a union type
 export function printId(id: StringOrNumber): void {
   console.log(`ID: ${id}`);
 }
 printId(101);
 printId("S2026-001");
 
-// ===== INTERSECTION TYPES -- combines ALL properties =====
-// StudentWithCourse must have all User fields AND enrolledCourse AND gpa
+// ===== INTERSECTION TYPES =====
 export type StudentWithCourse = User & {
   enrolledCourse: Course;
   gpa: number;
 };
+
 const topStudent: StudentWithCourse = {
   id: 1,
   name: "Maria Santos",
@@ -73,13 +71,13 @@ const topStudent: StudentWithCourse = {
   },
   gpa: 1.25,
 };
+console.log(topStudent); // Fixed: variable is now read
 
 // ==========================================
 // ===== SESSION 2 ADDITIONS (GT1 PART 2) =====
 // ==========================================
 
 // ===== GENERIC INTERFACE =====
-// ApiResponse<T> wraps any data shape safely
 export interface ApiResponse<T> {
   success: boolean;
   data: T;
@@ -87,23 +85,25 @@ export interface ApiResponse<T> {
 }
 
 // ===== UTILITY TYPES =====
-// 1. Partial<T> -- makes every field optional (perfect for updates)
 export type UserUpdate = Partial<User>;
-
-// 2. Omit<T, K> -- strips away specific keys (perfect for new submissions without an ID yet)[cite: 1]
 export type NewSubmissionPayload = Omit<Submission, "id">;
 
-// ===== ENUMS =====
-// Regular enum representing a multi-step status lifecycle[cite: 1]
-export enum SubmissionStatus {
-  Pending,
-  Graded,
-  Late,
-}
+// ===== ENUMS (Fixed for erasableSyntaxOnly compatibility) =====
+// Using object literal type configurations instead of standard enums
+export const SubmissionStatus = {
+  Pending: 0,
+  Graded: 1,
+  Late: 2,
+} as const;
+export type SubmissionStatus = typeof SubmissionStatus[keyof typeof SubmissionStatus];
 
-// Const enum for high-performance compile-time role constants[cite: 1]
-export const enum UserRole {
-  Student = "student",
-  Admin = "admin",
-  Instructor = "instructor",
-}
+// Exporting both Role and UserRole to clear the import error in src/index.ts
+export const Role = {
+  Student: "student",
+  Admin: "admin",
+  Instructor: "instructor",
+} as const;
+export type Role = typeof Role[keyof typeof Role];
+
+export const UserRole = Role;
+export type UserRole = Role;
